@@ -1,0 +1,131 @@
+p.caption {
+  font-size: 0.9em;
+  font-style: italic;
+  color: grey;
+  margin-right: 10%;
+  margin-left: 10%;  
+  text-align: justify;
+}
+
+h1, .h1, h2, .h2 {
+    margin-top: 100px;
+    color: #023E8A;
+}
+
+h1 {
+    padding-top: 45px !important;
+    margin-top: 30px !important;
+    color: #03045E;
+}
+h3, .h3{
+    margin-top: 30px;
+    color: #0077B6;
+}
+ h2, .h2{
+    margin-top: 60px;
+ }
+
+pre {
+    border: 0px solid #cccccc;
+    border-radius: 0px;
+ }
+
+a {
+  color: #0077B6;
+}
+
+
+
+/* ---------- Button ----------------- */
+.btn {
+  font-family: Source Sans Pro ;
+  font-weight: 500;
+}
+
+.btn {
+    border-width: 0 0px 0px 0px;
+    font-weight: normal;
+    text-transform: none ;
+}
+
+.btn-default {
+    color: #69b3a2;
+    background-color: #ffffff;
+    border-color: #69b3a2;
+}
+
+
+.btn-primary:active, .btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+}
+/* Style the tab */
+.tab {
+    border-width: 0 0px 0px 0px;
+    text-transform: none ;
+    font-family: Source Sans Pro ;
+    font-weight: 500;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: transparent;
+  border-color: #69b3a2;
+  color: #69b3a2;
+}
+
+/* Change background color of buttons on hover */
+.tab button.active, .tab button:focus, .tab button:hover {
+  background-color: #69b3a2 !important;
+  border-color: #69b3a2 !important;
+  color: white;
+  outline: none;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border-top: none;
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.main-container {
+    max-width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mycontent{
+      max-width: 900px !important;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: Source Sans Pro;
+      font-size: 130%;
+      line-height: 1.7;
+      padding-right: 15px;
+      padding-left: 15px;
+}
+
+
+.mytitle{
+  text-transform: uppercase;
+  font-family: Source Sans Pro;
+  font-size: 180%;
+  font-weight: 300;
+  letter-spacing: 4px;
+}
+
+.mysubtitle{
+  color:white;
+  font-family: Source Sans Pro;
+  font-size: 110%;
+}
+
+.mylogoheader{
+  width: 220px ;
+}

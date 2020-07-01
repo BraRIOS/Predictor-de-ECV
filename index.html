@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<title>Análisis de datos para predecir eventos cardíacos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Braian Rios, Juan Giorgio y Miguel Perez">
+
+
+<style>
+.myheader {
+    background-image: url(fondo.jpg);
+    min-height: 350px;
+    background-size: auto;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+
+    height: 100%; !important;
+    width: 100% !important;
+  }
+.mytitle{
+  text-transform: uppercase;
+  font-family: Source Sans Pro;
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: #ffffff;
+  }
+</style>
+
+<div class="myheader" style="text-align: center;">
+  <br>
+  <br><br>
+  <br><br>
+  <p class="mytitle">Análisis de datos para predecir eventos cardíacos</p>
+  <center><div class='mysubtitle'>
+    <i>Un informe hecho por Braian Rios, Juan Giorgio y Miguel Perez para la <a href="https://www.austral.edu.ar" target="blank">Universidad Austral</a></i>
+  </div></center>
+  <br><br>
+
+    <a> <img class="mylogoheader" src=Logo_Austral.png></a>
+  
+</div>
+
+
+
+
+
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 28px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<!-- THIS ALLOWS TO INSERT THE MENU THAT IS STORED IN A MENU.HTML FILE-->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav"></nav>
+<script>
+  $(function(){
+    $("#mainNav").load("../menu.html");
+  });
+</script>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="mycontent">
+<h1 id="objetivo">Objetivo</h1>
+<p>El siguiente informe se ha realizado con el fin de facilitarle al servicio de cardiología de un hospital universitario la decisión de internar o no por problemas coronarios a un paciente que ingresa a la guardia.</p>
+<h1 id="sobre-los-datos">Sobre los datos</h1>
+<p>Se trabajó sobre la información de un dataset de 1002 pacientes que fueron atendidos en guardia. Algunos fueron internados y a otros se los hizo esperar (información correspondiente a la columna “Evento”). Antes de tomar la decisión, se les preguntó la información contenida en las demás columnas. Los datos se encontraban completos y no realizamos ninguna modificación sobre ellos.</p>
+<h1 id="análisis-e-interpretación-de-los-datos">Análisis e interpretación de los datos</h1>
+<p>En el siguiente apartado, vamos a analizar los datos a partir de una serie de enunciados, que nos permitirán realizar gráficos que reúnen información necesaria para sacar conclusiones más profundas. Además, el análisis se basó en dos criterios provenientes del documento O’Donnell, C. J., &amp; Elosua, R. (2008). <a href="https://www.revespcardiol.org/es-pdf-13116658" target="blank">Factores de riesgo cardiovascular</a>, para seleccionar los factores de riesgo y los rangos de edades según fue requerido por cada enunciado.</p>
+<h2 id="cantidad-de-personas-por-rango-de-edad-y-género-que-presentan-las-enfermedades">Cantidad de personas por rango de edad y género que presentan las enfermedades</h2>
+<p>El primer enunciado facilita realizar el filtro más básico que puede ser de interés para la medicina, pues muestra si sobre alguno de los dos géneros se hacen más patentes Enfermedades Cardiovasculares (ECV) o es igual para los dos. A su vez, se divide en rangos de edades para poder concluir si a partir de cierto rango son más frecuentes las ECV.</p>
+<p>El gráfico es interactivo y contiene datos que son revelados al tocar un area del circulo.</p>
+<div class="tab">
+<p><button class="tablinks" onclick="openCity(event, 'Hombres')" id="defaultOpen">Hombres</button> <button class="tablinks" onclick="openCity(event, 'Mujeres')">Mujeres</button></p>
+</div>
+<div id="Hombres" class="tabcontent">
+<center>
+<div id="htmlwidget-3baeda52bb7854ea1fd6" style="width:672px;height:672px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3baeda52bb7854ea1fd6">{"x":{"visdat":{"483425734d01":["function () ","plotlyVisDat"]},"cur_data":"483425734d01","attrs":{"483425734d01":{"labels":{},"values":{},"marker":{"colors":["Blue","DodgerBlue","DeepSkyBlue"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"legend":{"font":{"size":24}},"font":{"family":"Titillium Web","size":20},"xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["18 a 40 años","40 a 70 años","70 a 89 años"],"values":[3,67,25],"marker":{"color":"rgba(31,119,180,1)","colors":["Blue","DodgerBlue","DeepSkyBlue"],"line":{"color":"rgba(255,255,255,1)"}},"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</center>
+</div>
+<div id="Mujeres" class="tabcontent">
+<center>
+<div id="htmlwidget-737e5be2d50b3faf752c" style="width:672px;height:672px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-737e5be2d50b3faf752c">{"x":{"visdat":{"483433405ef1":["function () ","plotlyVisDat"]},"cur_data":"483433405ef1","attrs":{"483433405ef1":{"labels":{},"values":{},"marker":{"colors":["Pink","Violet","Purple"]},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"legend":{"font":{"size":24}},"font":{"family":"Titillium Web","size":20},"xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"labels":["18 a 40 años","40 a 70 años","70 a 89 años"],"values":[0,12,9],"marker":{"color":"rgba(31,119,180,1)","colors":["Pink","Violet","Purple"],"line":{"color":"rgba(255,255,255,1)"}},"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</center>
+</div>
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+<p>Se puede observar que para el rango de edades más tempranas la cantidad de enfermos es muy baja en los hombres y llegando a ser nula en las mujeres.<br />
+La mayoría de los pacientes se encuentran en el rango medio de edades para ambos géneros.<br />
+En el rango de edades avanzadas las mujeres presentan un mayor volumen con respecto a los hombres.</p>
+<h2 id="pacientes-con-sintomas-que-presentaron-o-no-ecv">Pacientes con sintomas que presentaron o no ECV</h2>
+<p>En este apartado, se analizaron los casos en que pacientes poseían síntomas, observando la cantidad de ellos, por edades, que padecieron o no la enfermedad.</p>
+<div id="htmlwidget-d291d1a388efe34503c1" style="width:900px;height:672px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d291d1a388efe34503c1">{"x":{"visdat":{"4834744e62d6":["function () ","plotlyVisDat"]},"cur_data":"4834744e62d6","attrs":{"4834744e62d6":{"x":["17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","72","73","74","76","78","79","80","82","85","87","88"],"y":[1,3,1,1,3,1,5,2,3,1,3,4,7,8,6,6,11,9,12,9,17,6,12,14,8,14,16,8,13,9,11,17,10,6,7,4,11,14,8,12,8,10,11,4,5,3,2,7,8,5,5,5,4,4,3,2,5,3,1,1,1,1,1,1,1],"marker":{"color":"rgb(49,130,189)"},"name":"Sin ECV","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"4834744e62d6.1":{"x":["34","36","39","40","43","46","47","49","50","51","53","54","56","57","60","62","63","65","66","67","68","69","70","71","72","74","75","76","77","78","79","80","88"],"y":[1,1,1,2,1,1,3,3,1,1,2,2,4,2,1,3,4,2,4,4,2,1,1,3,3,1,3,2,1,1,1,2,1],"marker":{"color":"rgb(f,0,0)"},"name":"Con ECV","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"width":900,"margin":{"b":40,"l":60,"t":25,"r":10},"legend":{"x":0.73,"y":0.948,"font":{"size":20}},"xaxis":{"domain":[0,1],"automargin":true,"showgrid":false,"zeroline":false,"showticklabels":false,"title":"Edad","type":"category","categoryorder":"array","categoryarray":["17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","72","73","74","76","78","79","80","82","85","87","88","71","75","77"]},"yaxis":{"domain":[0,1],"automargin":true,"showgrid":false,"zeroline":false,"showticklabels":true,"title":"Cantidad"},"plot_bgcolor":"transparent","paper_bgcolor":"transparent","barmode":"group","font":{"family":"Titillium Web"},"annotations":[{"x":0.04,"y":-0.05,"showarrow":false,"text":"20","xref":"paper","yref":"paper"},{"x":0.36,"y":-0.05,"showarrow":false,"text":"40","xref":"paper","yref":"paper"},{"x":0.686,"y":-0.05,"showarrow":false,"text":"60","xref":"paper","yref":"paper"},{"x":0.948,"y":-0.05,"showarrow":false,"text":"80","xref":"paper","yref":"paper"}],"hovermode":"closest","showlegend":true},"source":"A","config":{"showSendToCloud":false},"data":[{"x":["17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","72","73","74","76","78","79","80","82","85","87","88"],"y":[1,3,1,1,3,1,5,2,3,1,3,4,7,8,6,6,11,9,12,9,17,6,12,14,8,14,16,8,13,9,11,17,10,6,7,4,11,14,8,12,8,10,11,4,5,3,2,7,8,5,5,5,4,4,3,2,5,3,1,1,1,1,1,1,1],"marker":{"color":"rgb(49,130,189)","line":{"color":"rgba(31,119,180,1)"}},"name":"Sin ECV","type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["34","36","39","40","43","46","47","49","50","51","53","54","56","57","60","62","63","65","66","67","68","69","70","71","72","74","75","76","77","78","79","80","88"],"y":[1,1,1,2,1,1,3,3,1,1,2,2,4,2,1,3,4,2,4,4,2,1,1,3,3,1,3,2,1,1,1,2,1],"marker":{"color":"rgb(f,0,0)","line":{"color":"rgba(255,127,14,1)"}},"name":"Con ECV","type":"bar","error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Se puede notar que la cantidad pacientes que padecieron la enfermedad es baja con respecto aquellos que si la tuvieron. Además, se puede apreciar que los pacientes más afectados por la misma entran en un rango entre los 47 y 80 años.</p>
+<h2 id="distribución-de-cada-factor-de-riesgo-según-la-edad-de-los-pacientes">Distribución de cada factor de riesgo según la edad de los pacientes</h2>
+<p>El siguiente gráfico consiste en diagramas de cajas que resumen cómo se distribuyen los pacientes por cada factor de riesgo según su edad. El mismo se compone de varios elementos:</p>
+<ul>
+<li>La línea que divide cada caja en 2 partes representa la mediana de pacientes del factor, correspondiente a cada una, según la edad.<br />
+</li>
+<li>Encierra con una caja el rango de edades que representa la mayor cantidad de pacientes para cada factor.</li>
+<li>Para quien desee información detallada acerca de como se distribuyen los pacientes, se encuentra indicada por una nube de puntos, donde cada uno representa una persona.<br />
+</li>
+<li>Se indica con la expresión “n =” el total de cada factor.</li>
+</ul>
+<p><img src="index_files/figure-html/boxplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Considerando la información del gráfico se concluye en lo siguiente:</p>
+<p>Existen dos grupos de mediana de edad. El primero consiste en los factores de riesgo Diabetes, Dislipemia e Hipertensión, los cuales rondan en una mediana de 59 a 60 años. El segundo grupo, formado por Obesidad y Tabaquismo, ronda en una mediana de 55 a 56 años. En consecuencia, el primer grupo contiene pacientes con edades ligeramente más avanzadas que el segundo grupo.</p>
+<p>El factor con mayor cantidad de pacientes es el de hipertensión, y el menor es el de diabetes.</p>
+<p>Como punto particular, hay una sola persona con dislipemia con 18 años (indicado en el grafico como un punto negro sobresaliente sobre el eje de Dislipemia).</p>
+<h2 id="cantidad-de-personas-que-presentan-ecv-por-cada-factor-de-riesgo">Cantidad de personas que presentan ECV por cada factor de riesgo</h2>
+<p>El siguiente gráfico nos muestra, según cada factor de riesgo, la cantidad de pacientes que presentaron un episodio. También, representadas en las intersecciones, podemos observar el numero de pacientes con más de un factor.</p>
+<p><img src="index_files/figure-html/grafico_Venn-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Analizando las áreas e intersecciones, se puede observar lo siguiente:</p>
+<ul>
+<li>La hipertensión arterial presenta un mayor volumen que los demás factores de riesgo por separado (sin incluir las intersecciones)<br />
+</li>
+<li>Las mayores medidas se encuentran en los siguientes conjuntos de factores de riesgo:
+<ul>
+<li>dislipemia - hipertensión arterial<br />
+</li>
+<li>diabetes - dislipemia - hipertensión arterial - obesidad.<br />
+</li>
+</ul></li>
+<li>No existe el paciente enfermo que presente únicamente diabetes.<br />
+</li>
+<li>Los pacientes no presentan un evento si juntan los siguientes conjuntos de factores de riesgo:
+<ul>
+<li>Diabetes – Dislipemia<br />
+</li>
+<li>Diabetes - Tabaquismo<br />
+</li>
+<li>Diabetes – Dislipemia – Hipertensión arterial<br />
+</li>
+<li>Diabetes– Hipertensión arterial– Obesidad<br />
+</li>
+<li>Diabetes - Dislipemia– Tabaquismo<br />
+</li>
+<li>Diabetes– Hipertensión arterial– Obesidad– Tabaquismo<br />
+</li>
+</ul></li>
+<li>El volumen total de cada factor de riesgo es:
+<ul>
+<li>Diabetes: 32<br />
+</li>
+<li>Dislipemia: 70<br />
+</li>
+<li>Hipertensión arterial: 75<br />
+</li>
+<li>Obesidad: 55<br />
+</li>
+<li>Tabaquismo: 56</li>
+</ul></li>
+</ul>
+<h1 id="predictor-de-eventos-cardíacos">Predictor de eventos cardíacos</h1>
+<p>En el siguiente apartado se llevará a cabo la elaboración de un predictor, que responderá si un paciente ingresado por el usuario presenta o no un evento cardíaco, con un porcentaje de precisión que se calculará más adelante.</p>
+<h2 id="selección-de-variables">Selección de variables</h2>
+<p>Consideramos a la columna Evento como una variable dependiente de otras columnas (consideradas variables independientes), cuya elección se basará sobre lo analizado en los anteriores enunciados y un estudio de correlación de los datos.</p>
+<h3 id="correlación-de-los-datos">Correlación de los datos</h3>
+<p>Sea el siguiente gráfico de correlación: <img src="index_files/figure-html/grafico_correlacion-1.png" width="672" style="display: block; margin: auto;" /> Resultan como variables independientes con mayor correlación a la variable dependiente Evento las siguientes:</p>
+<p>OBES - HTA - DLP - TBQ - AHF - Edad - Género - SCApHR - SmeA - DBT</p>
+<h3 id="método-stepwise">Método Stepwise</h3>
+<p>El método Stepwise es un grupo de algoritmos que tienen como objetivo automatizar la selección de variables en un modelo. Realizando una selección hacia atrás (denominado backward) el método indica las siguientes variables:</p>
+<p>Género - Edad - SmeA - MR - UD - MDEP - DBT - TBQ - OBES - AHF</p>
+<h3 id="conclusión">Conclusión</h3>
+<p>A partir del previo análisis de los datos, con los criterios surgidos de la bibliografía consultada, un estudio de correlación de los datos, mediante un gráfico, y el método ‘stepwise’, concluimos en la selección de las siguientes variables que participarán de la construcción del modelo de predicción:</p>
+<ul>
+<li>Edad</li>
+<li>Género</li>
+<li>HTA: Hipertensión Arterial</li>
+<li>DLP: Dislipemia</li>
+<li>OBES: Obesidad</li>
+<li>TBQ: Tabaquismo</li>
+<li>DBT: Diabetes</li>
+<li>SmeA: Síndrome Anginoso</li>
+<li>MR: Modifica respiración pocisión</li>
+</ul>
+<h2 id="modelo-de-predicción-regresión-logística">Modelo de predicción: Regresión logística</h2>
+<p>Debido a que deseamos realizar una predicción sobre el resultado de una variable que se puede dividir en dos categorías (posee o no evento, enfermo/sano) resulta conveniente utilizar regresión logística para la construcción del modelo de predicción. A su vez, dicha construcción se realiza sobre el 75% de los datos de los pacientes, a modo de entrenamiento del modelo.</p>
+<h2 id="validación-del-modelo">Validación del modelo</h2>
+<p>Evaluaremos el modelo sobre el 25% restante de haber divido el dataset anteriormente. <img src="index_files/figure-html/grafico_validacion-1.png" width="50%" /><img src="index_files/figure-html/grafico_validacion-2.png" width="50%" /></p>
+<h3 id="curva-auroc">Curva AUROC</h3>
+<p>La curva AUROC evalúa la precisión de un predictor evaluando la ocurrencia de falsos positivos. Cuanto más alto el valor AUC es, mejor es el predictor. <img src="index_files/figure-html/Curva_AUROC-1.png" width="672" style="display: block; margin: auto;" /> La etiqueta “Área bajo la curva” sobre el gráfico indica que el predictor tiene una probabilidad del 85% de que el modelo será capaz de distinguir entre positivos y negativos.</p>
+</div>
+<html>
+<head>
+<style>
+footer {
+  text-align: center;
+  background-size:;
+  background-color: #03045E;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<footer>
+<hr />
+<p style="
+  font-family: Source Sans Pro;
+  font-size: 200%;
+  font-weight: 500;
+  letter-spacing: 4px;">Contacto: </p>
+<p style=" max-width: 900px !important;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: Source Sans Pro;
+      font-size: 150%;
+      line-height: 1.7;
+      padding-right: 15px;
+      padding-left: 15px;">
+  <a href="mailto:braian.rios@ing.austral.edu.ar " target="blank" style="color: #ffffff;">braian.rios@ing.austral.edu.ar</a>
+<br><a href="mailto:juanmartin.giorgio@ing.austral.edu.ar" target="blank" style="color: #ffffff;">juanmartin.giorgio@ing.austral.edu.ar</a>
+<br><a href="mailto:miguel.perez@ing.austral.edu.ar" target="blank" style="color: #ffffff;">miguel.perez@ing.austral.edu.ar</a></p>
+
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Add font awesome icons -->
+<p style="text-align: center;">
+	<a href="https://github.com/BraRIOS/Predictor-de-ECV" class="fa fa-github" style="font-size: 25px;margin-bottom: 20px;color: #0096C7;"></a>
+</p>
+</footer>
+
+</body>
+</html>
+
+
+
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+</body>
+</html>
